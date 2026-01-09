@@ -12,6 +12,7 @@ jobs:
     uses: ultimateai/workflows/.github/workflows/deploy-from-branch.yml@main
     permissions:
       id-token: write
+      contents: read
     with:
       image_repo: 'dummy/dummy'
       app_squad: 'dummy'
